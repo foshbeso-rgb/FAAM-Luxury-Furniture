@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>F&A&M | Luxury Furniture</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            background: radial-gradient(circle at center, #02243d 0%, #01111e 100%); 
+            color: #fff; 
+            font-family: 'Cairo', sans-serif; 
+            overflow-x: hidden; 
+        }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
+        
+        /* شاشة الدخول الفخمة */
+        #overlay { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: linear-gradient(135deg, #01111e 0%, #000000 100%); 
+            z-index:9999; display:flex; flex-direction: column; justify-content:center; align-items:center; cursor:pointer; 
+        }
+        #overlay h1 { 
+            font-family: 'Playfair Display', serif; font-size: 4rem; color: #d4af37; margin-bottom: 10px;
+            letter-spacing: 5px; text-shadow: 0 0 20px rgba(212,175,55,0.6);
+        }
+        #overlay p { color: #aaa; font-size: 1.2rem; border: 1px solid #d4af37; padding: 10px 30px; border-radius: 30px; transition: 0.3s; }
+        #overlay p:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px #d4af37; }
+
+        .content { position: relative; z-index: 1; text-align: center; padding-top: 20px; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 4.5rem; color: #d4af37; margin: 10px 0 0 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .slogan { font-size: 0.9rem; color: #d4af37; letter-spacing: 6px; margin-bottom: 30px; font-weight: 300; }
+        
+        /* شريط التصنيفات */
+        nav { 
+            display: flex; justify-content: center; gap: 20px; padding: 15px; 
+            background: rgba(1, 17, 30, 0.7); backdrop-filter: blur(15px); 
+            border-top: 1px solid rgba(212,175,55,0.3); border-bottom: 1px solid rgba(212,175,55,0.3);
+            max-width: 800px; margin: 0 auto 30px auto; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        nav a { color: #e0e0e0; text-decoration: none; font-weight: 600; font-size: 1rem; transition: 0.3s; padding: 8px 20px; border-radius: 25px; cursor: pointer; }
+        nav a:hover, nav a.active { color: #000; background: #d4af37; box-shadow: 0 0 10px #d4af37; }
+        
+        .lang-switch { background: transparent; color: #d4af37; border: 1px solid #d4af37; padding: 8px 25px; cursor: pointer; border-radius: 30px; font-weight: bold; transition: 0.3s; margin-bottom: 15px; }
+        .lang-switch:hover { background: #d4af37; color: #000; box-shadow: 0 0 15px #d4af37; }
+        
+        /* شبكة الكروت الكبيرة الفخمة */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; padding: 0 50px 50px 50px; max-width: 1300px; margin: auto; }
+        .card { 
+            background: linear-gradient(145deg, rgba(5, 28, 47, 0.9) 0%, rgba(1, 15, 27, 0.95) 100%); 
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.4); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); transition: all 0.4s ease; overflow: hidden; position: relative;
+        }
+        .card:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 0 30px rgba(212,175,55,0.4); }
+        
+        .product-img { width: 100%; height: 220px; background: #010f1b; border-radius: 15px; margin-bottom: 20px; object-fit: cover; border: 1px solid rgba(212,175,55,0.2); cursor: zoom-in; transition: 0.3s; }
+        .product-img:hover { transform: scale(1.03); }
+        
+        .card h3 { font-size: 1.4rem; margin: 10px 0; color: #fff; font-weight: 600; }
+        .price { color: #d4af37; font-size: 1.7rem; margin: 5px 0; font-weight: 700; font-family: 'Playfair Display', serif; }
+        
+        /* حالة التوفر الحصرية */
+        .status { font-size: 0.85rem; color: #ffaa00; margin-bottom: 15px; font-weight: bold; letter-spacing: 1px; }
+        
+        .btn { 
+            display: block; background: linear-gradient(90deg, #b8860b 0%, #d4af37 50%, #b8860b 100%); 
+            color: #000; padding: 14px; text-decoration: none; border-radius: 10px; font-weight: 700; 
+            transition: 0.3s; border: none; cursor: pointer; text-shadow: 0 1px 2px rgba(212,175,55,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .btn:hover { background: linear-gradient(90deg, #d4af37 0%, #fff 50%, #d4af37 100%); transform: scale(1.02); box-shadow: 0 0 20px #d4af37; }
+        
+        /* صندوق عرض وتكبير الصور (Lightbox) */
+        #lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 10000; display: none;
+            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        #lightbox.active { display: flex; opacity: 1; }
+        #lightbox img { max-width: 85%; max-height: 85%; border-radius: 10px; border: 2px solid #d4af37; box-shadow: 0 0 30px rgba(212,175,55,0.5); }
+        #lightbox .close { position: absolute; top: 30px; right: 40px; color: #fff; font-size: 40px; cursor: pointer; transition: 0.3s; }
+        #lightbox .close:hover { color: #d4af37; }
+
+        .float-actions { position: fixed; bottom: 30px; left: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #fff; font-size: 26px; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; }
+        .float-btn:hover { transform: scale(1.1); }
+        .wa { background: #25d366; }
+        .phone { background: #d4af37; color: #000; }
+    </style>
+</head>
+<body>
+
+    <div id="overlay" onclick="startExperience()">
+        <h1>F&A&M</h1>
+        <p data-ar="اضغط للدخول إلى عالم الفخامة" data-en="Click to Enter the World of Luxury">اضغط للدخول إلى عالم الفخامة</p>
+    </div>
+
+    <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" loop></audio>
+
+    <div id="particles-js"></div>
+    
+    <div id="lightbox" onclick="closeLightbox()">
+        <span class="close">&times;</span>
+        <img id="lightboxImg" src="" alt="Zoomed Image">
+    </div>
+
+    <div class="float-actions">
+        <a href="tel:201000000000" class="float-btn phone"><i class="fas fa-phone"></i></a>
+        <a href="https://wa.me/201000000000" class="float-btn wa"><i class="fab fa-whatsapp"></i></a>
+    </div>
+
+    <div class="content">
+        <button class="lang-switch" onclick="toggleLanguage()">Switch Language / تغيير اللغة</button>
+        <h1 class="logo">F&A&M</h1>
+        <p class="slogan" id="slogan">ELEGANCE IN EVERY PIECE</p>
+        
+        <nav id="navBar">
+            <a onclick="filterCategory('all')" class="active" data-ar="الكل" data-en="All">الكل</a>
+            <a onclick="filterCategory('living')" data-ar="غرف المعيشة" data-en="Living Rooms">غرف المعيشة</a>
+            <a onclick="filterCategory('bedroom')" data-ar="غرف النوم" data-en="Bedrooms">غرف النوم</a>
+        </nav>
+
+        <div class="grid" id="productGrid">
+
+            <div class="card" data-category="living">
+                <img class="product-img" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=500" alt="كرسي كلاسيك ذهبي فاخر" onclick="openLightbox('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=500')">
+                <h3 data-ar="كرسي كلاسيك ذهبي فاخر" data-en="Luxury Golden Classic Chair">كرسي كلاسيك ذهبي فاخر</h3>
+                <p class="price" data-ar="95,000 ج.م" data-en="95,000 EGP">95,000 ج.م</p>
+                <div class="status" data-ar="متاح قطعة واحدة فقط" data-en="Only 1 item left">متاح قطعة واحدة فقط</div>
+                <a href="https://wa.me/201000000000?text=أود طلب منتج: كرسي كلاسيك ذهبي فاخر" target="_blank" class="btn" data-ar="طلب المنتج الآن" data-en="Order Now">طلب المنتج الآن</a>
+            </div>
+    
+        </div>
+    </div>
+
+    <script>
+        function startExperience() {
+            document.getElementById('overlay').style.display = 'none';
+            
+            var music = document.getElementById('bgMusic');
+            music.volume = 0.15;
+            music.play().catch(function(e) { console.log("Music blocked"); });
+
+            try {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    var welcomeText = "Welcome to the world of luxury furniture";
+                    var msg = new SpeechSynthesisUtterance(welcomeText);
+                    msg.lang = 'en-US'; 
+                    msg.rate = 0.85; 
+                    window.speechSynthesis.speak(msg);
+                }
+            } catch (error) { console.log(error); }
+            
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 75, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": ["#d4af37", "#ffffff"] },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 2.5, "random": true },
+                    "line_linked": { "enable": true, "distance": 130, "color": "#d4af37", "opacity": 0.15, "width": 1 },
+                    "move": { "enable": true, "speed": 0.6, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": {
+                    "events": { "onhover": { "enable": true, "mode": "bubble" } },
+                    "modes": { "bubble": { "distance": 100, "size": 4, "duration": 2, "opacity": 0.8 } }
+                }
+            });
+        }
+
+        // نظام الفلاتر الذكي (Filter)
+        function filterCategory(cat) {
+            // تغيير الـ Active class في الأزرار
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // إخفاء وإظهار الكروت بأنيميشن سريع
+            document.querySelectorAll('.card').forEach(card => {
+                if(cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // صندوق تكبير الصور الفخم (Lightbox)
+        function openLightbox(src) {
+            var lb = document.getElementById('lightbox');
+            document.getElementById('lightboxImg').src = src;
+            lb.classList.add('active');
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function toggleLanguage() {
+            const body = document.body;
+            const isAr = body.dir === 'rtl';
+            body.dir = isAr ? 'ltr' : 'rtl';
+            
+            document.querySelectorAll('[data-ar]').forEach(el => {
+                el.innerText = isAr ? el.getAttribute('data-en') : el.getAttribute('data-ar');
+            });
+            document.getElementById('slogan').innerText = isAr ? "ELEGANCE IN EVERY PIECE" : "الفخامة والتميز في كل قطعة";
+        }
+    </script>
+</body>
+</html>
