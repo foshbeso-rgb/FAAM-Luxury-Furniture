@@ -122,61 +122,19 @@
         </nav>
 
         <div class="grid" id="productGrid">
-            <!-- المنتجات ستُعرض هنا تلقائياً من مصفوفة الجافاسكريبت -->
+
+            <div class="card" data-category="living">
+                <img class="product-img" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=500" alt="كرسي كلاسيك ذهبي فاخر" onclick="openLightbox('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=500')">
+                <h3 data-ar="كرسي كلاسيك ذهبي فاخر" data-en="Luxury Golden Classic Chair">كرسي كلاسيك ذهبي فاخر</h3>
+                <p class="price" data-ar="2,000 ج.م" data-en="2,000 EGP">2,000 ج.م</p>
+                <div class="status" data-ar="متاح قطعة واحدة فقط" data-en="Only 1 item left">متاح قطعة واحدة فقط</div>
+                <a href="https://wa.me/201000000000?text=أود طلب منتج: كرسي كلاسيك ذهبي فاخر" target="_blank" class="btn" data-ar="طلب المنتج الآن" data-en="Order Now">طلب المنتج الآن</a>
+            </div>
+    
         </div>
     </div>
 
     <script>
-        // مصفوفة المنتجات الديناميكية (أضف منتجاتك هنا بكل سهولة)
-        const products = [
-            {
-                category: "living",
-                nameAr: "كرسي كلاسيك ذهبي فاخر",
-                nameEn: "Luxury Golden Classic Chair",
-                priceAr: "2,000 ج.م",
-                priceEn: "2,000 EGP",
-                statusAr: "متاح قطعة واحدة فقط",
-                statusEn: "Only 1 item left",
-                image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=500"
-            },
-            {
-                category: "bedroom",
-                nameAr: "سرير ملكي مخملي راقي",
-                nameEn: "Royal Velvet Luxury Bed",
-                priceAr: "15,000 ج.م",
-                priceEn: "15,000 EGP",
-                statusAr: "متاح بالطلب المسبق",
-                statusEn: "Available on Pre-order",
-                image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=500"
-            }
-        ];
-
-        // عرض المنتجات تلقائياً عند التحميل
-        function renderProducts(filter = 'all') {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            
-            const isEnglish = document.body.dir === 'ltr';
-
-            products.forEach(product => {
-                if (filter === 'all' || product.category === filter) {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.setAttribute('data-category', product.category);
-                    
-                    card.innerHTML = `
-                        <img class="product-img" src="${product.image}" alt="${isEnglish ? product.nameEn : product.nameAr}" onclick="openLightbox('${product.image}')">
-                        <h3 data-ar="${product.nameAr}" data-en="${product.nameEn}">${isEnglish ? product.nameEn : product.nameAr}</h3>
-                        <p class="price" data-ar="${product.priceAr}" data-en="${product.priceEn}">${isEnglish ? product.priceEn : product.priceAr}</p>
-                        <div class="status" data-ar="${product.statusAr}" data-en="${product.statusEn}">${isEnglish ? product.statusEn : product.statusAr}</div>
-                        <a href="https://wa.me/201000000000?text=أود طلب منتج: ${product.nameAr}" target="_blank" class="btn" data-ar="طلب المنتج الآن" data-en="Order Now">${isEnglish ? "Order Now" : "طلب المنتج الآن"}</a>
-                    `;
-                    grid.appendChild(card);
-                }
-            });
-        }
-
-        // تشغيل الموقع والصوت
         function startExperience() {
             document.getElementById('overlay').style.display = 'none';
             
@@ -210,15 +168,22 @@
                     "modes": { "bubble": { "distance": 100, "size": 4, "duration": 2, "opacity": 0.8 } }
                 }
             });
-
-            renderProducts('all');
         }
 
-        // نظام الفلاتر الديناميكي
+        // نظام الفلاتر الذكي (Filter)
         function filterCategory(cat) {
+            // تغيير الـ Active class في الأزرار
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
             event.target.classList.add('active');
-            renderProducts(cat);
+            
+            // إخفاء وإظهار الكروت بأنيميشن سريع
+            document.querySelectorAll('.card').forEach(card => {
+                if(cat === 'all' || card.getAttribute('data-category') === cat) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         // صندوق تكبير الصور الفخم (Lightbox)
@@ -231,7 +196,6 @@
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        // تبديل اللغة وتحديث النصوص بالكامل
         function toggleLanguage() {
             const body = document.body;
             const isAr = body.dir === 'rtl';
@@ -241,10 +205,6 @@
                 el.innerText = isAr ? el.getAttribute('data-en') : el.getAttribute('data-ar');
             });
             document.getElementById('slogan').innerText = isAr ? "ELEGANCE IN EVERY PIECE" : "الفخامة والتميز في كل قطعة";
-            
-            // إعادة رسم المنتجات بناءً على اللغة الجديدة
-            const activeCategory = document.querySelector('nav a.active').getAttribute('onclick').match(/'([^']+)'/)[1];
-            renderProducts(activeCategory);
         }
     </script>
 </body>
